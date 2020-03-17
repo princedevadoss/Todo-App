@@ -1,0 +1,9 @@
+{
+    "connection_string": "mongodb+srv://prince:Sasikala2122@cluster0-8f79j.mongodb.net/todo?retryWrites=true&w=majority",
+    "options": {
+        "useNewUrlParser": true,
+        "keepAlive": true, 
+        "connectTimeoutMS": 30000,
+        "reconnectTries": 10000
+    }
+}
