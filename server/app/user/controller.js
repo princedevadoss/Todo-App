@@ -45,7 +45,7 @@ UserAuth.prototype = {
                                     connection.removeConnection(con);
                                     res.send({message: 'Email sent to your mail id. Please check.'});
                                 })
-                                .catch(function() {
+                                .catch(function(error) {
                                     console.error(error);
                                     connection.removeConnection(con);
                                     res.send(this.responseCodes.error.server.internalError);
