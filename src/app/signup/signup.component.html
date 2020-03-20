@@ -6,16 +6,16 @@
 
             <div class="name"><input type="text" id="name" [(ngModel)]="name" name="name"
                     placeholder="" ngModel required><label>Name</label></div>
-            <div><label>Email</label><input type="text" id="email" [(ngModel)]="email" name="email" placeholder=""
-                    ngModel></div>
-            <div><label>Country code</label><input type="text" id="ext" [(ngModel)]="ext" name="ext" placeholder=""
-                    ngModel></div>
-            <div><label>Phone No</label><input type="text" id="phno" [(ngModel)]="phno" name="phno" placeholder=""
-                    ngModel></div>
-            <div><label>Password</label><input type="password" id="pass" [(ngModel)]="password" name="password"
-                    placeholder="" ngModel></div>
-            <div><label>Confirm Password</label><input type="password" name="cpass" id="cpass"
-                    [(ngModel)]="confirmPassword" placeholder="" ngModel></div>
+            <div><input type="text" id="email" [(ngModel)]="email" name="email" placeholder=""
+                    ngModel required><label>Email</label></div>
+            <div><input type="text" id="ext" [(ngModel)]="ext" name="ext" placeholder=""
+                    ngModel required><label>Country code</label></div>
+            <div><input type="text" id="phno" [(ngModel)]="phno" name="phno" placeholder=""
+                    ngModel required><label>Phone No</label></div>
+            <div><input type="password" id="pass" [(ngModel)]="password" name="password"
+                    placeholder="" ngModel required><label>Password</label></div>
+            <div><input type="password" name="cpass" id="cpass"
+                    [(ngModel)]="confirmPassword" placeholder="" ngModel required><label>Confirm Password</label></div>
             <input type="submit" id="submit" value="Signup" (click)="hello()">
             <div [class]="name">{{name}}</div> {{ phno }}
         </form>
