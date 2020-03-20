@@ -13,13 +13,15 @@ export class SignupComponent implements OnInit {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
+  extValidation: RegExp = new RegExp('^\\+[0-9]{1,3}$');
+  numericValidation: RegExp = new RegExp('^[0-9]+$');
   constructor(private client: ClientRequestService) { }
 
   ngOnInit(): void {
   }
 
   checkValidations() {
-    if(this.name.length > 0 && this.email.length && this.phno.length > 0 && this.password.length > 0 && this.password.length > 7 && this.ext.length > 0 && this.confirmPassword.length > 0 && this.confirmPassword == this.password) {
+    if(this.name.length > 0 && this.email.length && this.phno.length > 0 && this.password.length > 0 && this.password.length > 7 && this.ext.length > 0 && this.confirmPassword.length > 0 && this.confirmPassword == this.password && this.numericValidation.test(this.phno)) {
       return true
     }
     else {

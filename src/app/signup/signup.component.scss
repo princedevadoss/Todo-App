@@ -1,7 +1,50 @@
-.hello1 {
-    background: red;
-}
-
-.ll {
-    background: blue;
+.signup-page {
+    h1 {
+        color: #2F409B;
+        text-align: center;
+    }
+    div.signup {
+        position: absolute;
+        width: 100%;
+        color: #2F409B;
+        font-size: 20px;
+        form {
+            width: 30%;
+            margin: auto;
+            div {
+                position: relative;
+                margin-bottom: 20px;
+                label {
+                    position: absolute;
+                    top: 10px;
+                    transition: top 0.2s, font-size 0.2s;
+                }
+                input {
+                    height: 40px;
+                    display: block;
+                    width: 100%;
+                    padding: 2px 0;
+                    border: none;
+                    font-size: 16px;
+                    border-bottom: 2px solid #2F409B;
+                    outline: none;
+                    &:focus + label, &:valid + label {
+                        top: -8px;
+                        font-size: 14px;
+                        left: 5px;
+                    }
+                    &:focus {
+                        border: 2px solid #2F409B;
+                        border-radius: 5px;
+                    }
+                }
+            }
+            #submit {
+                background-color: #2F409B;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+            }
+        }
+    }
 }
