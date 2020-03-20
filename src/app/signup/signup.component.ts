@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
   }
 
   checkValidations() {
-    if(this.name.length > 0 && this.email.length && this.phno.length > 0 && this.password.length > 0 && this.password.length > 7 && this.ext.length > 0 && this.confirmPassword.length > 0 && this.confirmPassword == this.password && this.numericValidation.test(this.phno)) {
+    if(this.name.length > 0 && this.email.length && this.phno.length > 0 && this.password.length > 0 && this.password.length > 7 && this.ext.length > 0 && this.confirmPassword.length > 0 && this.confirmPassword === this.password && this.numericValidation.test(this.phno) && this.extValidation.test(this.ext)) {
       return true
     }
     else {
