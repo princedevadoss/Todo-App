@@ -1,4 +1,5 @@
 var connection = require('../../services/connect');
+var encryption = require('../../services/encrypt');
 var passwordHandler = require('../../services/password-handler');
 var mailer = require('../../services/mail');
 var users = require('../../services/model/users');
@@ -13,58 +14,107 @@ function UserAuth() {
 UserAuth.prototype = {
     signup: function(req, res) {
         var {name, email, mobile, password} = req.body;
-        this.connectionObj().then(function(con) {
-            this.userObj.find({email: email}, function(err, existingUser) {
-                if (err) {
+        if(this.checkValidation(name, email, mobile, password)) {
+            this.connectionObj().then(function(con) {
+                this.userObj.find({email: email}, function(err, existingUser) {
+                    if (err) {
+                        console.error(err);
+                        connection.removeConnection(con);
+                        res.send(this.responseCodes.error.server.internalError);
+                    }
+                    else {
+                        if(existingUser.length > 0) {
+                            res.send({message: 'User is already existing'});
+                            connection.removeConnection(con);
+                        }
+                        else {
+                            var user = new this.userObj();
+                            user.name = name;
+                            user.email = email;
+                            user.mobile = mobile;
+                            passwordHandler.createHash(password).then(function(hash) {
+                                var token = encryption.encrypt(user.email).encryptedData;
+                                user.password = hash;
+                                user.state = false;
+                                user.token = token;
+                                user.save(function(err, saveObj) {
+                                    if(err){
+                                        console.error(err);
+                                        connection.removeConnection(con);
+                                        res.send(this.responseCodes.error.server.internalError);
+                                    }
+                                    console.info(`${name} got successfully inserted`);
+                                    mailer(email, 'Activation For Todo App', '<a href="http://localhost:8081/app/todo/email/validation/'+ token +'">Please click here to activate your account</a>').then(function(info){
+                                        console.info(`Email sent ${info.response}`);
+                                        connection.removeConnection(con);
+                                        res.send({message: 'Email sent to your mail id. Please check.'});
+                                    })
+                                    .catch(function(error) {
+                                        console.error(error);
+                                        connection.removeConnection(con);
+                                        res.send(this.responseCodes.error.server.internalError);
+                                    }.bind(this));
+                                }.bind(this));
+                            }.bind(this))
+                            .catch(function(error) {
+                                console.error(error);
+                                connection.removeConnection(con);
+                                res.send(this.responseCodes.error.server.internalError);
+                            });
+                        }
+                    }
+                }.bind(this));
+            }.bind(this))
+            .catch(function(error) {
+                console.error(error);
+                res.send(this.responseCodes.error.server.internalError);
+            });
+        }
+        else {
+            res.send({message: 'Server Validation Error'});
+        }
+    },
+    emailValidation: function(req, res) {
+        this.connectionObj().then((con) => {
+            this.userObj.findOne({token: req.params.token}, function(err, user) {
+                if(err) {
                     console.error(err);
                     connection.removeConnection(con);
                     res.send(this.responseCodes.error.server.internalError);
                 }
-                else {
-                    if(existingUser.length > 0) {
-                        res.send({message: 'User is already existing'});
-                        connection.removeConnection(con);
-                    }
-                    else {
-                        var user = new this.userObj();
-                        user.name = name;
-                        user.email = email;
-                        user.mobile = mobile;
-                        passwordHandler.createHash(password).then(function(hash) {
-                            user.password = hash;
-                            user.state = false;
-                            user.save(function(err, saveObj) {
-                                if(err){
-                                    console.error(err);
-                                    connection.removeConnection(con);
-                                    res.send(this.responseCodes.error.server.internalError);
-                                }
-                                console.info(`${name} got successfully inserted`);
-                                mailer(email, 'Testing Signup', 'Test Message').then(function(info){
-                                    console.info(`Email sent ${info.response}`);
-                                    connection.removeConnection(con);
-                                    res.send({message: 'Email sent to your mail id. Please check.'});
-                                })
-                                .catch(function(error) {
-                                    console.error(error);
-                                    connection.removeConnection(con);
-                                    res.send(this.responseCodes.error.server.internalError);
-                                }.bind(this));
-                            }.bind(this));
-                        }.bind(this))
-                        .catch(function(error) {
-                            console.error(error);
-                            connection.removeConnection(con);
-                            res.send(this.responseCodes.error.server.internalError);
-                        });
-                    }
-                }
-            }.bind(this));
-        }.bind(this))
-        .catch(function(error) {
-            console.error(error);
+                user.state = true;
+                user.save().then((obj) => {
+                    console.log(obj);
+                    connection.removeConnection(con);
+                    res.redirect('/home');
+                })
+                .catch((err) => {
+                    console.error(err);
+                    connection.removeConnection(con);
+                    res.send(this.responseCodes.error.server.internalError);
+                });
+            });
+        })
+        .catch((err) => {
+            console.error(err);
             res.send(this.responseCodes.error.server.internalError);
         });
+    },
+    checkValidation: function(name, email, mobile, password) {
+        var validator = true;
+        var mobile_pattern=new RegEXP('^\\+[0-9]{11,13}$');
+        for(var arg of arguments) {
+            if(arg.length <= 0) {
+                validator = false;
+            }
+        }
+        if (password.length <= 7) {
+            validator = false;
+        }
+        if(!mobile_pattern.test(mobile)){
+            validator = false;
+        }
+        return validator;
     }
 };
 

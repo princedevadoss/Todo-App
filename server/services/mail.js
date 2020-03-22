@@ -13,7 +13,7 @@ function sendMail(reciever, subject, content) {
         from: 'todoapp.test123@gmail.com',
         to: reciever,
         subject: subject,
-        text: content
+        html: content
     };
 
     return transporter.sendMail(mailOptions);
