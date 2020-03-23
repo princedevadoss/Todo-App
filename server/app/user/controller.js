@@ -24,7 +24,7 @@ UserAuth.prototype = {
                     }
                     else {
                         if(existingUser.length > 0) {
-                            res.send({message: 'User is already existing'});
+                            res.send({error: 'User is already existing'});
                             connection.removeConnection(con);
                         }
                         else {
@@ -71,7 +71,7 @@ UserAuth.prototype = {
             });
         }
         else {
-            res.send({message: 'Server Validation Error'});
+            res.send({error: 'Server Validation Error'});
         }
     },
     emailValidation: function(req, res) {
@@ -102,7 +102,9 @@ UserAuth.prototype = {
     },
     checkValidation: function(name, email, mobile, password) {
         var validator = true;
-        var mobile_pattern=new RegEXP('^\\+[0-9]{11,13}$');
+        var mobile_pattern=new RegExp('^\\+[0-9]{11,13}$');
+        console.log(email);
+        var email_pattern=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         for(var arg of arguments) {
             if(arg.length <= 0) {
                 validator = false;
@@ -112,6 +114,9 @@ UserAuth.prototype = {
             validator = false;
         }
         if(!mobile_pattern.test(mobile)){
+            validator = false;
+        }
+        if(!email_pattern.test(email)) {
             validator = false;
         }
         return validator;
