@@ -1,0 +1,94 @@
+@import '../../common_scss/variables.scss'; 
+.signin-page {
+    div.signin {
+        color: $primary-color;
+        font-size: 20px;
+        margin-top: 90px;
+        form {
+            width: 30%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            h3 {
+                color: $primary-color;
+                text-align: center;
+            }
+            div {
+                position: relative;
+                margin-bottom: 40px;
+                label.signin-field {
+                    position: absolute;
+                    top: 10px;
+                    transition: top 0.2s, font-size 0.2s;
+                    &.error {
+                        top: -8px;
+                        font-size: 14px;
+                        left: 5px;
+                        padding: 0 5px;
+                        background: white;
+                        color: red;
+                    }
+                }
+                label.error {
+                    color: red;
+                    font-size: 14px;
+                    display: block;
+                }
+                input {
+                    height: 40px;
+                    display: block;
+                    width: 100%;
+                    padding: 2px 0;
+                    border: none;
+                    font-size: 16px;
+                    border-bottom: 1px solid $primary-color;
+                    outline: none;
+                    &:focus + label, &:valid + label {
+                        top: -8px;
+                        font-size: 14px;
+                        left: 5px;
+                        padding: 0 5px;
+                        background: white;
+                    }
+                    &:focus, &:valid {
+                        border: 1px solid $primary-color;
+                        border-radius: 5px;
+                    }
+                    &.error {
+                        border: 1px solid red;
+                        border-radius: 5px;
+                    }
+                }
+                &.error {
+                    margin-bottom: 2 0px;
+                }
+            }
+            #submit {
+                background-color: $primary-color;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+                width: 100%;
+                height: 50px;
+                outline: none;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}
+
+@media handheld and (max-width: 769px), screen and (max-device-width: 769px), screen and (max-width: 769px) {
+    .signin-page {
+        div.signin {
+            form {
+                width: auto;
+            }
+        }
+    }
+}
