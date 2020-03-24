@@ -1,8 +1,9 @@
-$primary-color: #2F409B;
+@import '../../common_scss/variables.scss'; 
 .signup-page {
     div.signup {
         color: $primary-color;
         font-size: 20px;
+        margin-top: 90px;
         form {
             width: 30%;
             margin: auto;

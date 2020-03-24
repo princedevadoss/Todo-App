@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientRequestService } from '../client-request.service';
 import {Router} from "@angular/router"
+import {TodoToastrService} from '../services/todo-toastr.service';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +25,7 @@ export class SignupComponent implements OnInit {
   confirmPassword: string = '';
   extValidation: RegExp = new RegExp('^\\+[0-9]{1,3}$');
   numericValidation: RegExp = new RegExp('^[0-9]{10,10}$');
-  constructor(private client: ClientRequestService, private router: Router) { }
+  constructor(private client: ClientRequestService, private router: Router, private todoToastr: TodoToastrService) { }
 
   ngOnInit(): void {
   }
@@ -79,7 +80,10 @@ export class SignupComponent implements OnInit {
         password: this.password
       }).subscribe(data => {
         if(data['message']) {
-          this.router.navigate(['/home']);
+          this.todoToastr.successMessage(data['message']);
+        }
+        else {
+          this.todoToastr.errorMessage(data['error']);
         }
       }, err => {
         console.log('error');

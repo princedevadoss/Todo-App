@@ -1,0 +1,30 @@
+@import '../common_scss/variables.scss';
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+    background: $primary-color;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    a {
+        float: right;
+        height: 100%;
+        margin-right: 20px;
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        border-radius: 10px;
+        font-weight: 600;
+        &:hover {
+            opacity: 0.7;
+            background: rgba(0, 19, 128, 0.466);
+        }
+    }
+}
