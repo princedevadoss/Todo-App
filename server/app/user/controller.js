@@ -74,6 +74,43 @@ UserAuth.prototype = {
             res.send({error: 'Server Validation Error'});
         }
     },
+    signin: function(req, res) {
+        var {email, password} = req.body;
+        this.connectionObj().then((con) => {
+            this.userObj.findOne({email: email, state: true}, function(err, user) {
+                if(err) {
+                    console.error(err);
+                    connection.removeConnection(con);
+                    res.send(this.responseCodes.error.server.internalError);
+                }
+                if(!user || Object.keys(user).length <= 0) {
+                    connection.removeConnection(con);
+                    res.send({error: 'Email/Password is incorrect'});
+                }
+                else {
+                    passwordHandler.comparePassword(password, user.password).then(function(result) {
+                        if(result) {
+                            connection.removeConnection(con);
+                            res.send({message: 'Successfully Logged In'});
+                        }
+                        else {
+                            connection.removeConnection(con);
+                            res.send({error: 'Email/Password is incorrect'});
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        connection.removeConnection(con);
+                        res.send(this.responseCodes.error.server.internalError);
+                    });
+                }
+            })
+        })
+        .catch((err) => {
+            console.error(err);
+            res.send(this.responseCodes.error.server.internalError);
+        });
+    },
     emailValidation: function(req, res) {
         this.connectionObj().then((con) => {
             this.userObj.findOne({token: req.params.token}, function(err, user) {
@@ -82,17 +119,25 @@ UserAuth.prototype = {
                     connection.removeConnection(con);
                     res.send(this.responseCodes.error.server.internalError);
                 }
-                user.state = true;
-                user.save().then((obj) => {
-                    console.log(obj);
+                if(user) {
+                    user.state = true;
+                    user.save().then((obj) => {
+                        console.log(obj);
+                        connection.removeConnection(con);
+                        res.cookie('user_val' ,'success', { maxAge: 1 * 60 * 60 * 1000});
+                        res.redirect('/signin');
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        connection.removeConnection(con);
+                        res.send(this.responseCodes.error.server.internalError);
+                    });   
+                }
+                else {
                     connection.removeConnection(con);
-                    res.redirect('/home');
-                })
-                .catch((err) => {
-                    console.error(err);
-                    connection.removeConnection(con);
-                    res.send(this.responseCodes.error.server.internalError);
-                });
+                    res.cookie('user_val' ,'expired', { maxAge: 1 * 60 * 60 * 1000});
+                    res.redirect('/signup');
+                }
             });
         })
         .catch((err) => {

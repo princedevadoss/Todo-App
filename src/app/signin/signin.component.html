@@ -2,17 +2,17 @@
     <div class="signin">
         <form name="signin">
             <h3>Sign in to your Todo Account</h3>
-            <div [ngClass]="errorMapper[1].class">
-                <input type="text" id="email" [(ngModel)]="email" name="email" placeholder="" [ngClass]="errorMapper[1].class" ngModel
+            <div [ngClass]="errorMapper[0].class">
+                <input type="text" id="email" [(ngModel)]="email" name="email" placeholder="" [ngClass]="errorMapper[0].class" ngModel
                     required>
-                <label class="signup-field" [ngClass]="errorMapper[1].class">Email</label>
-                <label *ngIf="errorMapper[1].value" class="error">{{errorMapper[1].msg}}</label>
+                <label class="signin-field" [ngClass]="errorMapper[0].class">Email</label>
+                <label *ngIf="errorMapper[0].value" class="error">{{errorMapper[0].msg}}</label>
             </div>
-            <div [ngClass]="errorMapper[4].class">
-                <input type="password" id="pass" [(ngModel)]="password" name="password" placeholder="" [ngClass]="errorMapper[4].class" ngModel
+            <div [ngClass]="errorMapper[1].class">
+                <input type="password" id="pass" [(ngModel)]="password" name="password" placeholder="" [ngClass]="errorMapper[1].class" ngModel
                     required>
-                <label class="signup-field" [ngClass]="errorMapper[4].class">Password</label>
-                <label *ngIf="errorMapper[4].value" class="error">{{errorMapper[4].msg}}</label>
+                <label class="signin-field" [ngClass]="errorMapper[1].class">Password</label>
+                <label *ngIf="errorMapper[1].value" class="error">{{errorMapper[1].msg}}</label>
             </div>
             <input type="submit" id="submit" value="Signin" (click)="signin()">
         </form>
