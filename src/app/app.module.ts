@@ -11,13 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from "@angular/forms";
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './signin/signin.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
     HomeComponent,
-    SigninComponent
+    SigninComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule,
